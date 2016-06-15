@@ -1,0 +1,76 @@
+P1[x_] := A1*Exp[-I*k1*x] + B1*Exp[I*k1*x];
+P2[x_] := A2*Exp[-I*k2*x] + B2*Exp[I*k2*x];
+P3[x_] := A3*Exp[-I*k3*x] + B3*Exp[I*k3*x];
+P4[x_] := A4*Exp[-I*k4*x] + B4*Exp[I*k4*x];
+P5[x_] := A5*Exp[-I*k5*x] + B5*Exp[I*k5*x];
+P6[x_] := A6*Exp[-I*k6*x] + B6*Exp[I*k6*x];
+P7[x_] := A7*Exp[-I*k7*x] + B7*Exp[I*k7*x];
+
+U1[x_] := A1/Z1*Exp[-I*k1*x] - B1/Z1*Exp[I*k1*x];
+U2[x_] := A2/Z2*Exp[-I*k2*x] - B2/Z2*Exp[I*k2*x];
+U3[x_] := A3/Z3*Exp[-I*k3*x] - B3/Z3*Exp[I*k3*x];
+U4[x_] := A4/Z4*Exp[-I*k4*x] - B4/Z4*Exp[I*k4*x];
+U5[x_] := A5/Z5*Exp[-I*k5*x] - B5/Z5*Exp[I*k5*x];
+U6[x_] := A6/Z6*Exp[-I*k6*x] - B6/Z6*Exp[I*k6*x];
+U7[x_] := A7/Z7*Exp[-I*k7*x] - B7/Z7*Exp[I*k7*x];
+
+us = 3.8*10^-8 *2 \[Pi] fkHz*1000;
+
+these are the equations which were there initially
+eqn1 = us == U1[0];
+eqn2 = S1*U1[l1] == S2*U2[l1] + S3*U3[l1] + S4*U4[l1] + S5*U5[l1]
+eqn3 = P1[l1] == P2[l1];
+eqn4 = P1[l1] == P3[l1];
+eqn5 = P1[l1] == P4[l1];
+eqn6 = P1[l1] == P5[l1];
+eqn7 = P2[l1 + l2]/U2[l1 + l2] == -I*Xn
+eqn8 = P3[l1 + l3]/U3[l1 + l3] == -I*Xo;
+eqn9 = S4*U4[l1 + l4] == S6*U6[l1 + l4]
+eqn10 = S5*U5[l1 + l5] == S7*U7[l1 + l5]
+eqn11 = P4[l1 + l4] == P6[l1 + l4]
+eqn12 = P5[l1 + l5] == P7[l1 + l5]
+eqn13 = P6[l1 + l4 + l6]/U6[l1 + l4 + l6] == -I*Xf1
+eqn14 = P7[l1 + l5 + l7]/U7[l1 + l5 + l7] == -I*Xf2;
+
+matrix form of the above equations
+
+A = {{Exp[-I*k1*0]/Z1, 0, 0, 0, 0, 0, 0, -Exp[I*k1*0]/Z1, 0, 0, 0, 0, 
+    0, 0}, {S1*Exp[-I*k1*l1]/Z1, -S2*Exp[-I*k2*l1]/Z2, -S3*
+     Exp[-I*k3*l1]/Z3, -S4*Exp[-I*k4*l1]/Z4, -S5*Exp[-I*k5*l1]/Z5, 0, 
+    0, -S1*Exp[I*k1*l1]/Z1, S2*Exp[I*k2*l1]/Z2, S3*Exp[I*k3*l1]/Z3, 
+    S4*Exp[I*k4*l1]/Z4, S5*Exp[I*k5*l1]/Z5, 0, 
+    0}, {Exp[-I*k1*l1], -Exp[-I*k2*l1], 0, 0, 0, 0, 0, 
+    Exp[I*k1*l1], -Exp[I*k2*l1], 0, 0, 0, 0, 
+    0}, {Exp[-I*k1*l1], -Exp[-I*k3*l1], 0, 0, 0, 0, 0, 
+    Exp[I*k1*l1], -Exp[I*k3*l1], 0, 0, 0, 0, 
+    0}, {Exp[-I*k1*l1], -Exp[-I*k4*l1], 0, 0, 0, 0, 0, 
+    Exp[I*k1*l1], -Exp[I*k4*l1], 0, 0, 0, 0, 0},
+   {Exp[-I*k1*l1], -Exp[-I*k5*l1], 0, 0, 0, 0, 0, 
+    Exp[I*k1*l1], -Exp[I*k5*l1], 0, 0, 0, 0, 0},
+   {0, Exp[-I*k2*(l1 + l2) ] + I*Xn*1/Z2*Exp[-I*k2*(l1 + l2)], 0, 0, 
+    0, 0, 0, 0, Exp[I*k2*(l1 + l2)] - I*Xn*1/Z2*Exp[-I*k2*(l1 + l2)], 
+    0, 0, 0, 0, 0}, {0, 0, 
+    Exp[-I*k3*(l1 + l3) ] + I*Xo*1/Z3*Exp[-I*k3*(l1 + l3)], 0, 0, 0, 
+    0, 0, 0, Exp[-I*k3*(l1 + l3)] - I*Xo*1/Z3*Exp[-I*k3*(l1 + l3)], 0,
+     0, 0, 0}, {0, 0, 0, S4*1/Z4*Exp[-I*k4*(l1 + l4)], 
+    0, -S6*1/Z6*Exp[-I*k6*(l1 + l4)], 0, 0, 0, 0, 0, 
+    S4*-(1/Z4)*Exp[I*k4*(l1 + l4)], 0, S6*1/Z6*Exp[I*k6*(l1 + l4)], 
+    0}, {0, 0, 0, 0, S5*1/Z5*Exp[-I*k5*(l1 + l5)], 
+    0, -S7*1/Z7*Exp[-I*k7*(l1 + l5)], 0, 0, 0, 
+    0, -S5*1/Z5*Exp[I*k5*(l1 + l5)], 0, 
+    S7*1/Z7*Exp[I*k7*(l1 + l5)]}, {0, 0, 0, Exp[-I*k4*(l1 + l4)], 
+    0, -Exp[-I*k6*(l1 + l4)], 0, 0, 0, 0, Exp[I*k4*(l1 + l4)], 
+    0, -Exp[I*k6*(l1 + l4)], 0}, {0, 0, 0, 0, Exp[-I*k5*(l1 + l5)], 
+    0, -Exp[-I*k7*(l1 + l5)], 0, 0, 0, 0, Exp[I*k5*(l1 + l5)], 
+    0, -Exp[I*k7*(l1 + l5)]}, {0, 0, 0, 0, 0, 
+    Exp[-I*k6*(l1 + l4 + l6) ] + I*Xf1*1/Z6*Exp[-I*k6*(l1 + l4 + l6)],
+     0, 0, 0, 0, 0, 0, 
+    Exp[I*k6*(l1 + l4 + l6) ] - I*Xf1*1/Z6*Exp[I*k6*(l1 + l4 + l6)], 
+    0},
+   {0, 0, 0, 0, 0, 0, 
+    Exp[-I*k7*(l1 + l5 + l7) ] + I*Xf2*1/Z7*Exp[-I*k7*(l1 + l5 + l7)],
+     0, 0, 0, 0, 0, 0, 
+    Exp[I*k7*(l1 + l5 + l7) ] - I*Xf2*1/Z7*Exp[I*k6*(l1 + l5 + l7)], 
+    0}};
+b = {us, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+LinearSolve[A, b]
